@@ -17,8 +17,8 @@ export class RegistrationPage {
   readonly confirmPassword: Locator;
   readonly registerCurrency: Locator;
   readonly submitButton: Locator;
-  readonly hasAccountText: Locator;
-  readonly switchToLogin: Locator;
+  readonly noAccountText: Locator;
+  readonly switchToLoginButton: Locator;
   readonly unic: UniversalMetods;
   readonly toggle: Locator;
   readonly toggleConfirm: Locator;
@@ -40,8 +40,8 @@ export class RegistrationPage {
     this.toggleConfirm = page.getByTestId('toggle-confirm-password-visibility');
     this.registerCurrency = page.getByTestId('register-currency-select');
     this.submitButton = page.getByTestId('register-submit-button');
-    this.hasAccountText = page.locator('p:has-text("Немає облікового запису?")');
-    this.switchToLogin = page.getByTestId('switch-to-login-button');
+    this.noAccountText = page.locator('p:has-text("Немає облікового запису?")');
+    this.switchToLoginButton = page.getByTestId('switch-to-login-button');
     this.unic = new UniversalMetods(page);
   }
 
@@ -97,5 +97,11 @@ export class RegistrationPage {
     await this.unic.safeVisible(this.confirmPassword);
     await this.unic.safeToHaveAttribute(this.confirmPassword, 'placeholder', 'Повторіть пароль');
     await this.checkPasswordIcon();
+  }
+
+  async checkSwitchToRegistration() {
+    await this.unic.safeVisible(this.switchToLoginButton);
+    await expect(this.switchToLoginButton).toHaveValue('Зареєструватися');
+    await this.unic.safeVisible(this.noAccountText);
   }
 }
