@@ -15,6 +15,7 @@ export class RegistrationPage {
   readonly password: Locator;
   readonly passwordIcon: Locator;
   readonly confirmPassword: Locator;
+  readonly confirmPasswordIcon: Locator;
   readonly registerCurrency: Locator;
   readonly submitButton: Locator;
   readonly noAccountText: Locator;
@@ -34,9 +35,10 @@ export class RegistrationPage {
     this.email = page.getByTestId('register-email-input');
     this.emailIcon = page.locator('svg.lucide-mail');
     this.password = page.getByTestId('register-password-input');
-    this.passwordIcon = page.locator('svg.lucide-lock');
+    this.passwordIcon = page.locator('svg.lucide-lock').nth(0);
     this.toggle = page.getByTestId('toggle-password-visibility');
     this.confirmPassword = page.getByTestId('register-confirm-password-input');
+    this.confirmPasswordIcon = page.locator('svg.lucide-lock').nth(1);
     this.toggleConfirm = page.getByTestId('toggle-confirm-password-visibility');
     this.registerCurrency = page.getByTestId('register-currency-select');
     this.submitButton = page.getByTestId('register-submit-button');
@@ -80,8 +82,8 @@ export class RegistrationPage {
   }
 
   async checkPasswordField() {
-    await this.unic.safeVisible(this.email);
-    await this.unic.safeToHaveAttribute(this.email, 'placeholder', 'Мінімум 6 символів');
+    await this.unic.safeVisible(this.password);
+    await this.unic.safeToHaveAttribute(this.password, 'placeholder', 'Мінімум 6 символів');
     await this.checkPasswordIcon();
   }
 
@@ -90,18 +92,33 @@ export class RegistrationPage {
     await this.unic.safeToHaveAttribute(this.passwordIcon, 'width', '24');
     await this.unic.safeToHaveAttribute(this.passwordIcon, 'height', '24');
     await this.unic.safeToHaveAttribute(this.passwordIcon, 'stroke', 'currentColor');
-    await expect(this.emailIcon).toHaveClass(/lucide-lock/);
+    await expect(this.passwordIcon).toHaveClass(/lucide-lock/);
   }
 
-  async chekcConfirmPasswordField() {
+  async checkConfirmPasswordField() {
     await this.unic.safeVisible(this.confirmPassword);
     await this.unic.safeToHaveAttribute(this.confirmPassword, 'placeholder', 'Повторіть пароль');
-    await this.checkPasswordIcon();
+    await this.checkConfirmPasswordIcon();
+  }
+
+  async checkConfirmPasswordIcon() {
+    await this.unic.safeVisible(this.confirmPasswordIcon);
+    await this.unic.safeToHaveAttribute(this.confirmPasswordIcon, 'width', '24');
+    await this.unic.safeToHaveAttribute(this.confirmPasswordIcon, 'height', '24');
+    await this.unic.safeToHaveAttribute(this.confirmPasswordIcon, 'stroke', 'currentColor');
+    await expect(this.confirmPasswordIcon).toHaveClass(/lucide-lock/);
   }
 
   async checkSwitchToRegistration() {
     await this.unic.safeVisible(this.switchToLoginButton);
-    await expect(this.switchToLoginButton).toHaveValue('Зареєструватися');
+    await expect(this.switchToLoginButton).toHaveText('Зареєструватися');
     await this.unic.safeVisible(this.noAccountText);
+  }
+
+  async checkFormFields() {
+    await this.checkNameField();
+    await this.checkEmailField();
+    await this.checkPasswordField();
+    await this.checkConfirmPasswordField();
   }
 }
