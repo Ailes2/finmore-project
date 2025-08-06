@@ -6,6 +6,7 @@ export class LoginPage {
   readonly emailInput: Locator;
   readonly emailIcon: Locator;
   readonly passwordInput: Locator;
+  readonly passwordIcon: Locator;
   readonly submitButton: Locator;
   readonly loginTitle: Locator;
   readonly subTitle: Locator;
@@ -14,7 +15,9 @@ export class LoginPage {
   readonly noAccountText: Locator;
   readonly icon: Locator;
   readonly unic: UniversalMetods;
-  readonly userMenu: Locator;
+  readonly sideBar: Locator;
+  readonly loginError: Locator;
+  readonly registrationForm: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -22,22 +25,25 @@ export class LoginPage {
     this.emailInput = page.getByTestId('login-email-input');
     this.emailIcon = page.locator('svg.lucide-mail');
     this.passwordInput = page.getByTestId('login-password-input');
+    this.passwordIcon = page.locator('svg.lucide-lock');
     this.submitButton = page.getByTestId('login-submit-button');
     this.icon = page.locator('svg.lucide-log-in');
     this.loginTitle = page.getByTestId('login-title');
     this.subTitle = page.getByText('Увійдіть до свого облікового запису', { exact: true });
-    this.toggleIcon = page.getByTestId('toggle-password-visibility');
+    this.toggleIcon = page.locator('svg.lucide-eye');
     this.registrationButton = page.getByTestId('switch-to-register-button');
     this.noAccountText = page.locator('p:has-text("Немає облікового запису?")');
-    this.userMenu = page.getByTestId('user-menu-trigger');
+    this.sideBar = page.getByTestId('sidebar');
+    this.loginError = page.getByTestId('login-error');
+    this.registrationForm = page.getByTestId('register-form');
   }
 
   async checkCentralBlock() {
     await this.unic.safeVisible(this.icon);
     await this.unic.safeVisible(this.loginTitle);
-    await expect(this.loginTitle).toHaveValue('Вхід до системи');
+    await expect(this.loginTitle).toHaveText('Вхід до системи');
     await this.unic.safeVisible(this.subTitle);
-    await expect(this.subTitle).toHaveValue('Увійдіть до свого облікового запису');
+    await expect(this.subTitle).toHaveText('Увійдіть до свого облікового запису');
   }
 
   async checkEmailField() {
@@ -70,27 +76,37 @@ export class LoginPage {
   }
 
   async checkPasswordIcon() {
-    await this.unic.safeVisible(this.toggleIcon);
-    await this.unic.safeToHaveAttribute(this.toggleIcon, 'width', '24');
-    await this.unic.safeToHaveAttribute(this.toggleIcon, 'height', '24');
-    await this.unic.safeToHaveAttribute(this.toggleIcon, 'stroke', 'currentColor');
-    await expect(this.toggleIcon).toHaveClass(/lucide-lock/);
+    await this.unic.safeVisible(this.passwordIcon);
+    await this.unic.safeToHaveAttribute(this.passwordIcon, 'width', '24');
+    await this.unic.safeToHaveAttribute(this.passwordIcon, 'height', '24');
+    await this.unic.safeToHaveAttribute(this.passwordIcon, 'stroke', 'currentColor');
   }
 
   async checkSubmitButton() {
     await this.unic.safeVisible(this.submitButton);
-    await expect(this.submitButton).toHaveValue('Увійти');
+    await expect(this.submitButton).toHaveText('Увійти');
   }
 
-  async authorization() {
+  async authorization(email: string, password: string) {
     await this.checkEmailField();
     await this.checkPasswordField();
-
-    //надалі перенести в окремий файл
-    await this.unic.safeFill(this.emailInput, 'qwerty@mail.com');
-    await this.unic.safeFill(this.passwordInput, '123456789');
+    await this.unic.safeFill(this.emailInput, email);
+    await this.unic.safeFill(this.passwordInput, password);
+    await expect(this.emailInput).toHaveValue(email);
+    await expect(this.passwordInput).toHaveValue(password);
     await this.checkSubmitButton();
     await this.unic.safeClick(this.submitButton);
-    await this.unic.safeVisible(this.userMenu);
+  }
+
+  async errorMessage() {
+    await this.unic.safeVisible(this.loginError);
+    await expect(this.loginError).toContainText('Невірний email або пароль');
+  }
+
+  async noHaveAccount() {
+    await this.unic.safeVisible(this.registrationButton);
+    await this.unic.safeVisible(this.noAccountText);
+    await this.unic.safeClick(this.registrationButton);
+    await this.unic.safeVisible(this.registrationForm);
   }
 }

@@ -23,6 +23,7 @@ export class RegistrationPage {
   readonly unic: UniversalMetods;
   readonly toggle: Locator;
   readonly toggleConfirm: Locator;
+  readonly registerPage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -45,6 +46,7 @@ export class RegistrationPage {
     this.noAccountText = page.locator('p:has-text("Немає облікового запису?")');
     this.switchToLoginButton = page.getByTestId('switch-to-login-button');
     this.unic = new UniversalMetods(page);
+    this.registerPage = page.getByTestId('register-page');
   }
 
   async checkCentralblock() {
@@ -121,4 +123,14 @@ export class RegistrationPage {
     await this.checkPasswordField();
     await this.checkConfirmPasswordField();
   }
+
+  async checkFullRegistrationForm() {
+    await this.checkCentralblock();
+    await this.checkNameField();
+    await this.checkEmailField();
+    await this.checkPasswordField();
+    await this.checkConfirmPasswordField();
+  }
+
+  //треба дописати метод для основної валюти
 }
