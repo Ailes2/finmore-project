@@ -21,18 +21,17 @@ test.describe('Go to login page', () => {
 
       await loginPage.authorization(user.email, user.password);
 
-      try {
-        if (user.valid) {
-          await logoValidAuthorization.waitFor({ state: 'visible', timeout: 10000 });
-          await unic.safeVisible(logoValidAuthorization);
-          console.log(user);
-        } else {
-          await loginPage.errorMessage();
-        }
-      } catch (error) {
-        console.log(`Не вдалось залогінитись по користувачеві ${user.name}`);
-        console.error(error);
+      if (user.valid) {
+        await logoValidAuthorization.waitFor({ state: 'visible', timeout: 10000 });
+        await unic.safeVisible(logoValidAuthorization);
+        console.log(user + ' - успішно залогінився');
+      } else {
+        await loginPage.errorMessage();
       }
+
+      // if (user.valid) {
+
+      // }
     });
   });
 });

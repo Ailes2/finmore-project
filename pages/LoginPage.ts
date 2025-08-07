@@ -96,6 +96,7 @@ export class LoginPage {
     await expect(this.passwordInput).toHaveValue(password);
     await this.checkSubmitButton();
     await this.unic.safeClick(this.submitButton);
+    await this.unic.safeVisible(this.sideBar);
   }
 
   async errorMessage() {

@@ -18,7 +18,7 @@ export class RegistrationPage {
   readonly confirmPasswordIcon: Locator;
   readonly registerCurrency: Locator;
   readonly submitButton: Locator;
-  readonly noAccountText: Locator;
+  readonly haveAccountText: Locator;
   readonly switchToLoginButton: Locator;
   readonly unic: UniversalMetods;
   readonly toggle: Locator;
@@ -43,7 +43,7 @@ export class RegistrationPage {
     this.toggleConfirm = page.getByTestId('toggle-confirm-password-visibility');
     this.registerCurrency = page.getByTestId('register-currency-select');
     this.submitButton = page.getByTestId('register-submit-button');
-    this.noAccountText = page.locator('p:has-text("Немає облікового запису?")');
+    this.haveAccountText = page.locator('p:has-text(Вже маєте обліковий запис?)');
     this.switchToLoginButton = page.getByTestId('switch-to-login-button');
     this.unic = new UniversalMetods(page);
     this.registerPage = page.getByTestId('register-page');
@@ -114,7 +114,7 @@ export class RegistrationPage {
   async checkSwitchToRegistration() {
     await this.unic.safeVisible(this.switchToLoginButton);
     await expect(this.switchToLoginButton).toHaveText('Зареєструватися');
-    await this.unic.safeVisible(this.noAccountText);
+    await this.unic.safeVisible(this.haveAccountText);
   }
 
   async checkFormFields() {
@@ -130,6 +130,16 @@ export class RegistrationPage {
     await this.checkEmailField();
     await this.checkPasswordField();
     await this.checkConfirmPasswordField();
+  }
+
+  async createAccount(name: string, email: string, password: string, confirmPassword: string) {
+    await this.checkFormFields();
+    await this.unic.safeFill(this.name, name);
+    await this.unic.safeFill(this.email, email);
+    await this.unic.safeFill(this.password, password);
+    await this.unic.safeFill(this.confirmPassword, confirmPassword);
+    await this.unic.safeClick(this.submitButton);
+    await this.unic.safeVisible(this.loginPage.sideBar);
   }
 
   //треба дописати метод для основної валюти
