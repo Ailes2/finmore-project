@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
-import { LoginPage } from '../pages/LoginPage';
-import { randomUsers } from '../Utils/Credentials';
-import { UniversalMetods } from '../Utils/UniversalMetods';
+import { HomePage } from '../../pages/HomePage';
+import { LoginPage } from '../../pages/LoginPage';
+import { randomUsers } from '../../Utils/Credentials';
+import { UniversalMetods } from '../../Utils/UniversalMetods';
 
 // треба подумати. Бо на цьому сайті не зберігаються аккаунти в бд, а тільки в кукі і тому неможна перевірити логін на сайті
 
@@ -28,10 +28,6 @@ test.describe('Go to login page', () => {
       } else {
         await loginPage.errorMessage();
       }
-
-      // if (user.valid) {
-
-      // }
     });
   });
 });

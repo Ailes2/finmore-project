@@ -9,7 +9,7 @@ export const randomUsers = [
     name: 'admin user',
     email: 'admin@company.com',
     password: 'AdminPass123!',
-    valid: false,
+    valid: true,
   },
   {
     name: 'empty email',
