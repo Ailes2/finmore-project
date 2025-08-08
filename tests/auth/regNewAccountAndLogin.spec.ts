@@ -12,6 +12,7 @@ test.describe('Registration and login by credentionals', () => {
       const loginPage = new LoginPage(page);
       const unic = new UniversalMetods(page);
       const homePage = new HomePage(page);
+
       await homePage.goToHomePage();
       await homePage.assertTitle('Повнофункціональний фінансовий менеджер');
       await loginPage.noHaveAccount(); //для переходу в форму регістрації
