@@ -16,7 +16,7 @@ export class RegistrationPage {
   readonly passwordIcon: Locator;
   readonly confirmPassword: Locator;
   readonly confirmPasswordIcon: Locator;
-  readonly registerCurrency: Locator;
+  readonly registerCurrencySelector: Locator;
   readonly submitButton: Locator;
   readonly haveAccountText: Locator;
   readonly switchToLoginButton: Locator;
@@ -41,7 +41,7 @@ export class RegistrationPage {
     this.confirmPassword = page.getByTestId('register-confirm-password-input');
     this.confirmPasswordIcon = page.locator('svg.lucide-lock').nth(1);
     this.toggleConfirm = page.getByTestId('toggle-confirm-password-visibility');
-    this.registerCurrency = page.getByTestId('register-currency-select');
+    this.registerCurrencySelector = page.getByTestId('register-currency-select');
     this.submitButton = page.getByTestId('register-submit-button');
     this.haveAccountText = page.locator('p:has-text(Вже маєте обліковий запис?)');
     this.switchToLoginButton = page.getByTestId('switch-to-login-button');
@@ -130,14 +130,23 @@ export class RegistrationPage {
     await this.checkEmailField();
     await this.checkPasswordField();
     await this.checkConfirmPasswordField();
+    await this.unic.safeVisible(this.registerCurrencySelector);
   }
 
-  async createAccount(name: string, email: string, password: string, confirmPassword: string) {
+  async createAccount(
+    name: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    currency: string,
+  ) {
     await this.checkFormFields();
     await this.unic.safeFill(this.name, name);
     await this.unic.safeFill(this.email, email);
     await this.unic.safeFill(this.password, password);
     await this.unic.safeFill(this.confirmPassword, confirmPassword);
+    await this.unic.safeVisible(this.registerCurrencySelector);
+    await this.registerCurrencySelector.selectOption(currency);
     await this.unic.safeClick(this.submitButton);
     await this.unic.safeVisible(this.loginPage.sideBar);
   }

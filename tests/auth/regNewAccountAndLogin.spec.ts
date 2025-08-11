@@ -34,7 +34,13 @@ test.describe('Registration and login by credentials', () => {
 
       try {
         await test.step('Реєстрація нового користувача', async () => {
-          await registrationPage.createAccount(user.name, user.email, user.password, user.password);
+          await registrationPage.createAccount(
+            user.name,
+            user.email,
+            user.password,
+            user.password,
+            user.currency,
+          );
           const registrationScreenshot = await page.screenshot({ fullPage: true });
           await test.info().attach(`Registration ${user.name}`, {
             body: registrationScreenshot,
