@@ -4,7 +4,7 @@ import { LoginPage } from '../../pages/LoginPage';
 import { randomUsers } from '../../Utils/Credentials';
 import { UniversalMetods } from '../../Utils/UniversalMetods';
 
-// треба подумати. Бо на цьому сайті не зберігаються аккаунти в бд, а тільки в кукі і тому неможна перевірити логін на сайті
+// треба подумати. Бо на цьому сайті не зберігаються аккаунти в бд, а тільки в кукі і тому неможна перевірити логін на сайті по попередньо зареєстрованим юзерам
 
 // test.describe('Go to login page', () => {
 //   test.beforeEach(async ({ page }) => {

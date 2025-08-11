@@ -1,4 +1,4 @@
-import { expect, Page, Locator } from '@playwright/test';
+import { expect, Page, Locator, TestInfo } from '@playwright/test';
 
 export class UniversalMetods {
   readonly page: Page;
@@ -45,6 +45,22 @@ export class UniversalMetods {
     await this.safeVisible(locator);
     const text = await locator.textContent();
     return text?.trim() || '';
+  }
+
+  async Screenshot(
+    testInfo: TestInfo,
+    name: string,
+    extraInfo?: string, // друга частина імені скріна
+  ) {
+    const screenshot = await this.page.screenshot({ fullPage: true });
+
+    // Формуємо назву вкладення з урахуванням додаткової інформації
+    const attachName = extraInfo ? `${name}: ${extraInfo}` : name;
+
+    await testInfo.attach(attachName, {
+      body: screenshot,
+      contentType: 'image/png',
+    });
   }
 
   async safeToHaveAttribute(

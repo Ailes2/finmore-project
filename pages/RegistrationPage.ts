@@ -150,6 +150,4 @@ export class RegistrationPage {
     await this.unic.safeClick(this.submitButton);
     await this.unic.safeVisible(this.loginPage.sideBar);
   }
-
-  //треба дописати метод для основної валюти
 }

@@ -39,7 +39,6 @@ export const randomUsers = [
     email: 'unknown@mail.com',
     password: 'wrongpassword',
     currency: 'UAH',
-
     valid: false,
   },
   {
@@ -56,22 +55,4 @@ export const randomUsers = [
     currency: 'UAH',
     valid: false,
   },
-
-  {
-    name: 'wrong currency CNY',
-    email: 'qwerty@mail.com',
-    password: '123456789',
-    currency: 'CNY',
-    valid: false,
-  },
 ];
-
-// for (const user of validUsers) {
-//   test(`успішний логін: ${user.email}`, async ({ page }) => {
-//     const loginPage = new LoginPage(page);
-//     await page.goto('/login');
-//     await loginPage.fillEmail(user.email);
-//     await loginPage.fillPassword(user.password);
-//     await loginPage.clickLogin();
-
-// треба ще вказати консоль лог щоб розуміти на якій ти строці
