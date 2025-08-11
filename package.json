@@ -2,13 +2,22 @@
   "name": "finmore-project",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "clean-allure": "powershell -Command \"if (Test-Path .\\allure-results) { Remove-Item -Recurse -Force .\\allure-results }; if (Test-Path .\\allure-report) { Remove-Item -Recurse -Force .\\allure-report }\"",
+    "test": "npm run clean-allure && npx playwright test",
+    "generate-report": "npx allure generate allure-results -o allure-report",
+    "open-report": "npx allure open allure-report",
+    "report": "npm run generate-report && npm run open-report",
+    "test-report": "npm run test && npm run report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.54.2",
-    "@types/node": "^24.1.0"
+    "@types/node": "^24.1.0",
+    "allure-playwright": "^3.3.3",
+    "rimraf": "^6.0.1"
   }
 }
