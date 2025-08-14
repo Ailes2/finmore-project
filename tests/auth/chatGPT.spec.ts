@@ -1,16 +1,18 @@
-// import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-// test('Go to wikipedia', async ({ page }) => {
-//   await page.goto('https://www.wikipedia.org/');
-//   const searchField = page.locator('#searchInput');
-//   await expect(searchField).toBeVisible();
-//   await searchField.fill('Playwright');
-//   await expect(searchField).toHaveValue('Playwright');
-//   const searchButton = page.locator('button.pure-button.pure-button-primary-progressive');
-//   await expect(searchButton).toBeVisible();
-//   await searchButton.click();
+test('Test the Hello World text', async ({ page }) => {
+  await page.goto('https://the-internet.herokuapp.com/dynamic_loading/2');
+  const startButton = page.getByRole('button', { name: 'Start' });
+  const text = page.locator('#finish');
 
-//   const searchTitle = page.locator('div.searchresults');
-//   await expect(searchTitle).toBeVisible();
-//   await expect(searchTitle).toContainText('Playwright');
-// });
+  await expect(startButton).toBeVisible();
+  await startButton.click();
+  await expect(text).toBeVisible({ timeout: 20000 });
+  await expect(text).toHaveText('Hello World!');
+
+  //додаю якісь зміни для пуша в гіт лаб
+
+  //
+  ///
+  ///
+});

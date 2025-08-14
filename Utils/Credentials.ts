@@ -56,3 +56,9 @@ export const randomUsers = [
     valid: false,
   },
 ];
+
+export const userData = [
+  { login: 'gdhfgkjdfhgk', password: '2837564283' },
+  { login: 'jdfhgk', password: '45678' },
+  { login: 'bvdfklbvgdflk', password: '6278349222' },
+];
