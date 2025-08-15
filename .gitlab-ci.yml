@@ -1,0 +1,25 @@
+stages:
+  - test
+
+variables:
+  NODE_ENV: test
+  PLAYWRIGHT_BROWSERS_PATH: 0
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+playwright_tests:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.47.2-jammy
+  before_script:
+    - npm ci
+    - npx playwright install --with-deps
+  script:
+    - npx playwright test --reporter=html
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+    expire_in: 30 days
