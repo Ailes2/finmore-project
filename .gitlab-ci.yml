@@ -20,7 +20,8 @@ playwright_tests:
     - npx playwright test --reporter=line,allure-playwright,html
     - npx allure generate ./allure-results -o ./allure-report
     - ls -la ./allure-report
-    - echo "Allure report is available here: ${CI_JOB_URL}/artifacts/file/allure-report/index.html"
+    - echo 'Allure report is available here: ${CI_JOB_URL}/artifacts/file/allure-report/index.html'
+
   artifacts:
     when: always
     paths:
