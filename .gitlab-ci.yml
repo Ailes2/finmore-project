@@ -16,13 +16,20 @@ playwright_tests:
   before_script:
     - npm ci
     - npx playwright install --with-deps
-    - npx playwright test --reporter=line,allure-playwright
   script:
-    - npx playwright test --reporter=html
+    # Запуск тестів з HTML та Allure репортерами
+    - npx playwright test --reporter=line,allure-playwright,html
+    # Генерація HTML Allure репорту
+    - npx allure generate ./allure-results -o ./allure-report
+    - ls -la ./allure-report
+    # Вивід посилання на репорт у логах GitLab
+    - echo "Allure report is available here: ${CI_JOB_URL}/artifacts/file/allure-report/index.html"
   artifacts:
     when: always
     paths:
-      - playwright-report/
+      - playwright-report/ # HTML Playwright звіт
+      - allure-results/ # сирі результати Allure
+      - allure-report/ # HTML Allure
     expire_in: 30 days
 
 playwright_docker:
@@ -39,4 +46,6 @@ playwright_docker:
     when: always
     paths:
       - playwright-report/
+      - allure-results/
+      - allure-report/
     expire_in: 30 days
