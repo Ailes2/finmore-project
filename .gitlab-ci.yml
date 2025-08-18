@@ -24,9 +24,9 @@ playwright_tests:
   artifacts:
     when: always
     paths:
-      - playwright-report/ # HTML Playwright звіт
-      - allure-results/ # сирі результати Allure
-      - allure-report/ # HTML Allure
+      - playwright-report/
+      - allure-results/
+      - allure-report/
     expire_in: 30 days
 
 playwright_docker:
