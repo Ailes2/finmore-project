@@ -20,7 +20,7 @@ playwright_tests:
     # запуск тестів з HTML і Allure репортерами
     - npx playwright test --reporter=html,allure-playwright
     # генеруємо HTML Allure звіт
-    - npx allure generate allure-results -o allure-report --clean
+    - npx allure generate ./allure-results -o ./allure-report --clean
   artifacts:
     when: always
     paths:
