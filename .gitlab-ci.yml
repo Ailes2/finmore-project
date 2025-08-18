@@ -17,11 +17,16 @@ playwright_tests:
     - npm ci
     - npx playwright install --with-deps
   script:
-    - npx playwright test --reporter=html
+    # запуск тестів з HTML і Allure репортерами
+    - npx playwright test --reporter=html,allure-playwright
+    # генеруємо HTML Allure звіт
+    - npx allure generate allure-results -o allure-report --clean
   artifacts:
     when: always
     paths:
-      - playwright-report/
+      - playwright-report/ # твій існуючий HTML Playwright звіт
+      - allure-results/ # сирі Allure файли
+      - allure-report/ # HTML Allure звіт
     expire_in: 30 days
 
 playwright_docker:
@@ -38,4 +43,6 @@ playwright_docker:
     when: always
     paths:
       - playwright-report/
+      - allure-results/
+      - allure-report/
     expire_in: 30 days
