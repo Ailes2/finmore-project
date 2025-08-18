@@ -1,5 +1,6 @@
 stages:
   - test
+  - report
 
 variables:
   NODE_ENV: test
@@ -23,6 +24,7 @@ playwright_tests:
     when: always
     paths:
       - playwright-report/
+      - allure-results/
     expire_in: 30 days
 
 playwright_docker:
@@ -39,4 +41,20 @@ playwright_docker:
     when: always
     paths:
       - playwright-report/
+      - allure-results/
+    expire_in: 30 days
+
+allure_report:
+  stage: report
+  image: mcr.microsoft.com/playwright:v1.47.2-jammy
+  needs:
+    - job: playwright_tests
+      artifacts: true
+  script:
+    - npx allure generate ./allure-results -o ./allure-report
+    - ls -la ./allure-report
+  artifacts:
+    when: always
+    paths:
+      - allure-report/
     expire_in: 30 days
