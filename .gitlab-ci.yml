@@ -23,3 +23,19 @@ playwright_tests:
     paths:
       - playwright-report/
     expire_in: 30 days
+
+playwright_docker:
+  stage: test
+  image: docker:24
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+  script:
+    - docker build -t playwright-tests .
+    - docker run --rm -v $PWD:/app playwright-tests
+  artifacts:
+    when: always
+    paths:
+      - playwright-report/
+    expire_in: 30 days
