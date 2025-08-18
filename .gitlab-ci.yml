@@ -1,5 +1,6 @@
 stages:
   - test
+  - report # новий етап для генерації репорту
 
 variables:
   NODE_ENV: test
@@ -16,18 +17,14 @@ playwright_tests:
   before_script:
     - npm ci
     - npx playwright install --with-deps
+    - npx playwright test --reporter=line,allure-playwright
   script:
-    - npx playwright test --reporter=line,allure-playwright,html
-    - npx allure generate ./allure-results -o ./allure-report
-    - ls -la ./allure-report
-    - echo "Allure report is available here: \$CI_JOB_URL/artifacts/file/allure-report/index.html"
-
+    - npx playwright test --reporter=html
   artifacts:
     when: always
     paths:
       - playwright-report/
-      - allure-results/
-      - allure-report/
+      - allure-results/ # додаємо сирі результати для наступного job
     expire_in: 30 days
 
 playwright_docker:
@@ -45,5 +42,21 @@ playwright_docker:
     paths:
       - playwright-report/
       - allure-results/
+    expire_in: 30 days
+
+allure_report:
+  stage: report
+  image: frankescobar/allure-docker-service:latest
+  needs:
+    - job: playwright_tests
+      artifacts: true
+  script:
+    - echo "Generating Allure HTML report..."
+    - allure generate ./allure-results -o ./allure-report
+    - ls -la ./allure-report
+    - echo "Allure report is ready: ${CI_JOB_URL}/artifacts/file/allure-report/index.html"
+  artifacts:
+    when: always
+    paths:
       - allure-report/
     expire_in: 30 days
