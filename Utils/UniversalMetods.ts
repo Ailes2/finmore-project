@@ -47,15 +47,12 @@ export class UniversalMetods {
     return text?.trim() || '';
   }
 
-  async Screenshot(
-    testInfo: TestInfo,
-    name: string,
-    extraInfo?: string, // друга частина імені скріна
-  ) {
+  async Screenshot(testInfo: TestInfo, name?: string) {
     const screenshot = await this.page.screenshot({ fullPage: true });
 
-    // Формуємо назву вкладення з урахуванням додаткової інформації
-    const attachName = extraInfo ? `${name}: ${extraInfo}` : name;
+    // якщо ім'я не передане → беремо останній елемент з titlePath
+    const titleParts = testInfo.titlePath;
+    const attachName = name || titleParts[titleParts.length - 1] || 'screenshot';
 
     await testInfo.attach(attachName, {
       body: screenshot,
