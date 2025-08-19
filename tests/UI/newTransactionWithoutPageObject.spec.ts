@@ -58,4 +58,5 @@ test.describe('Check create new transaction', () => {
       await unic.Screenshot(testInfo, 'Submit transaction');
     });
   });
+  //
 });
