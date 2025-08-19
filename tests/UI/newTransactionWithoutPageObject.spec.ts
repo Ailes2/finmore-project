@@ -39,7 +39,7 @@ test.describe('Check create new transaction', () => {
       await unic.safeVisible(buttonNewTransaction);
       await unic.safeClick(buttonNewTransaction);
       await unic.safeVisible(transactionFormTitle);
-      await unic.Screenshot(testInfo);
+      await unic.Screenshot(testInfo, 'Open transaction form');
     });
 
     await test.step('Fill transaction form', async () => {
@@ -49,13 +49,13 @@ test.describe('Check create new transaction', () => {
       await unic.safeFill(dateInput, '2025-08-18');
       await transactionAccountSelect.selectOption('Картка Монобанку');
       await unic.safeFill(tagInput, 'New tag');
-      await unic.Screenshot(testInfo);
+      await unic.Screenshot(testInfo, 'Fill transaction form');
     });
 
     await test.step('Submit transaction', async () => {
       await unic.safeClick(submitButton);
       await unic.safeVisible(buttonNewTransaction);
-      await unic.Screenshot(testInfo);
+      await unic.Screenshot(testInfo, 'Submit transaction');
     });
   });
 });
