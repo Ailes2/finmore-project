@@ -1,25 +1,10 @@
-import { expect, test } from '@playwright/test';
-import { HomePage } from '../../pages/HomePage';
+import { test } from '@playwright/test';
 import { UniversalMetods } from '../../Utils/UniversalMetods';
-import { RegistrationPage } from '../../pages/RegistrationPage';
-import { LoginPage } from '../../pages/LoginPage';
+import { authorization } from '../../helpers/authorization';
 
 test.describe('Check create new transaction', () => {
   test.beforeEach(async ({ page }) => {
-    const homePage = new HomePage(page);
-    const registrationPage = new RegistrationPage(page);
-    const loginPage = new LoginPage(page);
-
-    await homePage.goToHomePage();
-    await homePage.assertTitle('Повнофункціональний фінансовий менеджер');
-    await loginPage.noHaveAccount();
-    await registrationPage.createAccount(
-      'New User',
-      'newsemail@gmail.com',
-      '123456789',
-      '123456789',
-      'UAH',
-    );
+    await authorization(page, 'New User', 'newemail@gmail.com', '123456789', '123456789', 'USD');
   });
 
   test('Create new transaction', async ({ page }, testInfo) => {
