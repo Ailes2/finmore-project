@@ -20,6 +20,8 @@ test.describe('Check create new transaction', () => {
     const tagInput = page.getByTestId('new-tag-input');
     const submitButton = page.getByTestId('transaction-form-submit');
 
+    await page.pause();
+
     await test.step('Open transaction form', async () => {
       await unic.safeVisible(buttonNewTransaction);
       await unic.safeClick(buttonNewTransaction);
