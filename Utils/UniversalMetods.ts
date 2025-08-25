@@ -7,6 +7,15 @@ export class UniversalMetods {
     this.page = page;
   }
 
+  async safeVisible(locator: Locator, description = 'element') {
+    const desc = this.locatorHaveString(description, locator);
+    try {
+      await expect(locator).toBeVisible();
+    } catch (error) {
+      throw new Error(`${desc} is not visible: ${error}`);
+    }
+  }
+
   async safeClick(locator: Locator, description = 'element') {
     const desc = this.locatorHaveString(description, locator);
     try {
@@ -28,15 +37,6 @@ export class UniversalMetods {
     }
   }
 
-  async safeVisible(locator: Locator, description = 'element') {
-    const desc = this.locatorHaveString(description, locator);
-    try {
-      await expect(locator).toBeVisible();
-    } catch (error) {
-      throw new Error(`${desc} is not visible: ${error}`);
-    }
-  }
-
   async safeHidden(locator: Locator) {
     await expect(locator).toBeHidden();
   }
@@ -50,7 +50,6 @@ export class UniversalMetods {
   async Screenshot(testInfo: TestInfo, name?: string) {
     const screenshot = await this.page.screenshot({ fullPage: true });
 
-    // якщо ім'я не передане → беремо останній елемент з titlePath
     const titleParts = testInfo.titlePath;
     const attachName = name || titleParts[titleParts.length - 1] || 'screenshot';
 
