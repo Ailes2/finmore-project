@@ -36,7 +36,9 @@ test.describe('Registration and login by credentials', () => {
             user.password,
             user.currency,
           );
+
           const registrationScreenshot = await page.screenshot({ fullPage: true });
+
           await test.info().attach(`Registration ${user.name}`, {
             body: registrationScreenshot,
             contentType: 'image/png',
@@ -60,11 +62,13 @@ test.describe('Registration and login by credentials', () => {
 
           await test.step('Log in with credentials', async () => {
             await loginPage.authorization(user.email, user.password);
+            //
             const loginScreenshot = await page.screenshot({ fullPage: true });
             await test.info().attach(`Login with new credentials: ${user.name}`, {
               body: loginScreenshot,
               contentType: 'image/png',
             });
+            //
           });
         }
       } catch (error) {

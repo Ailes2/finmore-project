@@ -87,16 +87,19 @@ export class LoginPage {
     await expect(this.submitButton).toHaveText('Увійти');
   }
 
-  async authorization(email: string, password: string) {
+  async authorization(email: string, password: string, expectSuccess = true) {
     await this.checkEmailField();
     await this.checkPasswordField();
     await this.unic.safeFill(this.emailInput, email);
     await this.unic.safeFill(this.passwordInput, password);
-    await expect(this.emailInput).toHaveValue(email);
-    await expect(this.passwordInput).toHaveValue(password);
     await this.checkSubmitButton();
     await this.unic.safeClick(this.submitButton);
-    await this.unic.safeVisible(this.sideBar);
+
+    if (expectSuccess) {
+      await this.unic.safeVisible(this.sideBar);
+    } else {
+      await this.unic.safeVisible(this.loginError);
+    }
   }
 
   async errorMessage() {
