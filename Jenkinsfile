@@ -6,23 +6,26 @@ pipeline {
     }
  
     stages {
-        stage('Run Playwright tests in Docker') {
+        stage('Install dependencies') {
             steps {
-                echo 'Running Playwright tests inside Docker container...'
-                sh '''
-                docker run --rm -v $PWD:/tests -w /tests mcr.microsoft.com/playwright:v1.48.2-focal \
-                bash -c "npm ci && npx playwright test --reporter=list"
-                '''
+                echo 'Installing Node dependencies...'
+                sh 'npm ci'
+                sh 'npx playwright install'
+            }
+        }
+ 
+        stage('Run Playwright tests') {
+            steps {
+                echo 'Running Playwright tests...'
+                // Запуск тестів
+                sh 'npx playwright test --reporter=list'
             }
         }
  
         stage('Publish report') {
             steps {
                 echo 'Publishing Playwright report...'
-                sh '''
-                docker run --rm -v $PWD:/tests -w /tests mcr.microsoft.com/playwright:v1.48.2-focal \
-                npx playwright show-report
-                '''
+                sh 'npx playwright show-report'
             }
         }
     }
