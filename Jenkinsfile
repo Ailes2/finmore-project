@@ -14,7 +14,7 @@ pipeline {
             steps {
                 echo 'Installing Node dependencies...'
                 sh 'npm ci'
-                sh 'npx playwright install'
+                sh 'npx playwright install-deps'
             }
         }
  
