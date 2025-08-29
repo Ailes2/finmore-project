@@ -1,41 +1,35 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.48.2-focal'
-            args '--user 1000:1000'
-        }
-    }
+    agent any
  
     environment {
         NODE_ENV = 'test'
     }
  
     stages {
-        stage('Install dependencies') {
+        stage('Run Playwright tests in Docker') {
             steps {
-                echo 'Installing Node dependencies...'
-                sh 'npm ci'
-            }
-        }
- 
-        stage('Run Playwright tests') {
-            steps {
-                echo 'Running Playwright tests...'
-                sh 'npx playwright test --reporter=list'
+                echo 'Running Playwright tests inside Docker container...'
+                sh '''
+                docker run --rm -v $PWD:/tests -w /tests mcr.microsoft.com/playwright:v1.48.2-focal \
+                bash -c "npm ci && npx playwright test --reporter=list"
+                '''
             }
         }
  
         stage('Publish report') {
             steps {
                 echo 'Publishing Playwright report...'
-                sh 'npx playwright show-report'
+                sh '''
+                docker run --rm -v $PWD:/tests -w /tests mcr.microsoft.com/playwright:v1.48.2-focal \
+                npx playwright show-report
+                '''
             }
         }
     }
  
     post {
         always {
-            echo 'Cleaning up...'
+            echo 'Cleaning up workspace...'
             cleanWs()
         }
         failure {
