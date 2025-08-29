@@ -1,8 +1,10 @@
 pipeline {
     agent any
+ 
     tools {
         nodejs 'NodeJS'
     }
+ 
     environment {
         NODE_ENV = 'test'
     }
