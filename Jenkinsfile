@@ -1,6 +1,8 @@
 pipeline {
     agent any
- 
+    tools {
+        nodejs 'NodeJS'
+    }
     environment {
         NODE_ENV = 'test'
     }
@@ -17,7 +19,6 @@ pipeline {
         stage('Run Playwright tests') {
             steps {
                 echo 'Running Playwright tests...'
-                // Запуск тестів
                 sh 'npx playwright test --reporter=list'
             }
         }
