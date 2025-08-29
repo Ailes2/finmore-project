@@ -1,10 +1,8 @@
 pipeline {
     agent any
- 
     tools {
         nodejs 'NodeJS'
     }
- 
     environment {
         NODE_ENV = 'test'
     }
@@ -14,7 +12,7 @@ pipeline {
             steps {
                 echo 'Installing Node dependencies...'
                 sh 'npm ci'
-                sh 'npx playwright install-deps'
+                sh 'npx playwright install'
             }
         }
  
