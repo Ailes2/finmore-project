@@ -1,35 +1,48 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.48.2-focal'
+            args '--user 1000:1000'
+        }
+    }
  
-    tools {
-        nodejs 'NodeJS' 
+    environment {
+        NODE_ENV = 'test'
     }
  
     stages {
         stage('Install dependencies') {
             steps {
+                echo 'Installing Node dependencies...'
                 sh 'npm ci'
             }
         }
  
         stage('Run Playwright tests') {
             steps {
-                sh 'npx playwright install-deps'
-                sh 'npx playwright test --reporter=line'
+                echo 'Running Playwright tests...'
+                sh 'npx playwright test --reporter=list'
             }
         }
  
         stage('Publish report') {
             steps {
-                publishHTML(target: [
-                    allowMissing: true,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Playwright Test Report'
-                ])
+                echo 'Publishing Playwright report...'
+                sh 'npx playwright show-report'
             }
+        }
+    }
+ 
+    post {
+        always {
+            echo 'Cleaning up...'
+            cleanWs()
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        success {
+            echo 'Pipeline finished successfully!'
         }
     }
 }
